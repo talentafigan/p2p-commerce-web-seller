@@ -17,7 +17,7 @@ export class AuthApi {
     email: string;
     password: string;
   }) {
-    return Axios.post("/api/login", {
+    return Axios.post("/api/register", {
       ...data,
       userTypeId: "1",
     });

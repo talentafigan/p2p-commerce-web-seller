@@ -6,6 +6,14 @@ export default class Helpers {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(val);
   }
+  intialString(val: any) {
+    let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+    let initials = [...val.matchAll(rgx)] || [];
+    initials = (
+      (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
+    ).toUpperCase();
+    return initials;
+  }
   generateUUID = () => {
     var d = new Date().getTime(); //Timestamp
     var d2 =

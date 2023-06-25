@@ -36,7 +36,7 @@
                   v-model="form.password"
                   @click:append="showPassword = !showPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  outlined  
+                  outlined
                   :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   label="Masukan Password"
                   hide-details="auto"
@@ -81,6 +81,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { AuthApi } from "@/api/auth.api";
+import { ProfileApi } from "@/api/profile.api";
 
 @Component
 export default class AuthLogin extends Vue {
@@ -98,6 +99,7 @@ export default class AuthLogin extends Vue {
   };
 
   authApi = new AuthApi();
+  profileApi = new ProfileApi();
 
   async onClickLogin() {
     if (!this.form.key || !this.form.password) return;
@@ -110,9 +112,11 @@ export default class AuthLogin extends Vue {
         this.errorMessage = response.data.message;
         return;
       }
+      const profile = await this.profileApi.me(response.data.data.accessToken);
+      if (profile.data.status !== "SUCCESS") return;
       this.$store.commit("auth/setAuth", {
         token: response.data.data.accessToken,
-        user: response.data.data.user,
+        user: profile.data.data.user,
       });
       this.$nextTick(() => {
         window.location.reload();

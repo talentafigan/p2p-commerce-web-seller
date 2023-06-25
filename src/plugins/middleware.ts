@@ -1,24 +1,19 @@
 import store from "@/store";
 import Helpers from "./helpers";
 
-const publicRouter = ["authLogin", "authRegister", "authForgotPassword"];
-
-const helpers = new Helpers();
+const authRouter = ["authLogin", "authRegister", "authForgotPassword"];
 
 export const authMiddleware = (ctx: any) => {
-  const vuex = sessionStorage.getItem("vuex");
+  const vuex = localStorage.getItem("vuex");
   if (!vuex) {
-    if (publicRouter.includes(ctx.to.name)) return ctx.next();
+    if (authRouter.includes(ctx.to.name)) return ctx.next();
     return ctx.next("/auth/login");
   }
-  const auth = JSON.parse(vuex);
-  if (auth.auth.token === null) {
-    if (publicRouter.includes(ctx.to.name)) return ctx.next();
+  const vuexParsed = JSON.parse(vuex);
+  if (vuexParsed.auth.token === null) {
+    if (authRouter.includes(ctx.to.name)) return ctx.next();
     return ctx.next("/auth/login");
   }
-  if (helpers.datePassed(auth.auth.loginDate, 24, "hour")) {
-    return ctx.next("/auth/login");
-  }
-  if (!publicRouter.includes(ctx.to.name)) return ctx.next("/");
+  if (authRouter.includes(ctx.to.name)) return ctx.next("/");
   return ctx.next();
 };

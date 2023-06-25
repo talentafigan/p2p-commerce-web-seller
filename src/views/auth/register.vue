@@ -85,6 +85,7 @@
             @click="onClickRegister"
             class="mt-8"
             block
+            :disabled="isLoading"
             :loading="isLoading"
             large
             depressed
@@ -149,6 +150,7 @@ export default class AuthRegister extends Vue {
   authApi = new AuthApi();
 
   $refs: any;
+  $snackbar: any;
 
   async onClickRegister() {
     if (!this.$refs.form.validate()) return;
@@ -161,6 +163,10 @@ export default class AuthRegister extends Vue {
         this.errorMessage = response.data.message;
         return;
       }
+      this.$snackbar.open({
+        text: "Berhasil Mendaftar !",
+      });
+      await this.$helpers.shortSetTimeOut(1000);
       this.$nextTick(() => {
         this.$router.push("/auth/login");
       });

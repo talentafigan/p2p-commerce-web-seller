@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    name: "home",
+    name: "dashboard",
     path: "/",
     component: Module.index,
   },
