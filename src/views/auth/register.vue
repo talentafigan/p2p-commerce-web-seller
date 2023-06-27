@@ -157,7 +157,10 @@ export default class AuthRegister extends Vue {
     this.showErrorMessage = false;
     this.isLoading = true;
     try {
-      const response = await this.authApi.register(this.form);
+      const response = await this.authApi.register({
+        ...this.form,
+        phone: "62" + this.form.phone,
+      });
       if (response.data.status !== "SUCCESS") {
         this.showErrorMessage = true;
         this.errorMessage = response.data.message;
