@@ -7,7 +7,7 @@ export class AuthApi {
   login(data: { key: string; password: string }) {
     return Axios.post("/api/login", {
       ...data,
-      userTypeId: "1",
+      userTypeId: "2",
     });
   }
   register(data: {
@@ -19,7 +19,21 @@ export class AuthApi {
   }) {
     return Axios.post("/api/register", {
       ...data,
-      userTypeId: "1",
+      userTypeId: "2",
     });
+  }
+  resetPasswordRequest(email: string) {
+    return Axios.post("/api/reset-password/request", {
+      email,
+      userTypeId: "2",
+    });
+  }
+  resetPasswordCheckCode(code: string) {
+    return Axios.post("/api/reset-password/check-code-active", {
+      code,
+    });
+  }
+  resetPasswordNewPassword(data: { newPassword: string; code: string }) {
+    return Axios.post("/api/reset-password/check-code-active", data);
   }
 }

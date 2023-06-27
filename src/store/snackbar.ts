@@ -1,0 +1,23 @@
+import { UserDto } from "@/types/interface";
+
+const Auth = {
+  namespaced: true,
+  state: () => ({
+    show: null,
+  }),
+  mutations: {
+    setAuth(
+      state: any,
+      payload: { token: string; user: UserDto; loginDate: string }
+    ) {
+      state.token = payload.token;
+      state.user = payload.user;
+    },
+    resetAuth(state: any) {
+      state.token = null;
+      state.user = null;
+    },
+  },
+};
+
+export default Auth;

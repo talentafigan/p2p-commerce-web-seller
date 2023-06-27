@@ -1,7 +1,9 @@
-import store from "@/store";
-import Helpers from "./helpers";
-
-const authRouter = ["authLogin", "authRegister", "authForgotPassword"];
+const authRouter = [
+  "authLogin",
+  "authRegister",
+  "authForgotPassword",
+  "authResetPassword",
+];
 
 export const authMiddleware = (ctx: any) => {
   const vuex = localStorage.getItem("vuex");

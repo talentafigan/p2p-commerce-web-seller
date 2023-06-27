@@ -2,7 +2,7 @@ import Vue from "vue";
 import CommonSnackbar from "@/components/common/snackbar.vue";
 
 class Snackbar {
-  open(props: { text: string }) {
+  open(props: { text: string; duration?: number; position?: string }) {
     const tmp = Vue.extend({
       name: "CommonSnackbar",
       render: function (createElement) {

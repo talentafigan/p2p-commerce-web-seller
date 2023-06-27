@@ -9,24 +9,19 @@
           class="py-12 px-6 d-flex justify-center align-start flex-column"
         >
           <div class="d-flex justify-center flex-column align-start w-full">
-            <span class="text-h5 font-weight-bold">Reset Password</span>
+            <span class="text-h5 font-weight-bold">Lupa Password</span>
             <span class="text-subtitle-2 mt-4"
-              >Kami akan mengirim anda tautan untuk reset password.
+              >Jangan Khawatir. Mohon masukan email yang terhubung dengan akun
+              anda.
             </span>
           </div>
-          <v-form @submit.prevent="onClickLogin" class="mt-3 w-full">
-            <v-row dense class="ma-0">
-              <v-col cols="12">
-                <v-text-field
-                  outlined
-                  v-model="form.key"
-                  label="Masukan Email Terdaftar"
-                  class="mt-2"
-                  hide-details="auto"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-form>
+          <v-text-field
+            outlined
+            v-model="form.email"
+            label="Masukan Email Terdaftar"
+            class="w-full mt-4"
+            hide-details="auto"
+          ></v-text-field>
           <v-alert
             class="w-full ma-0 mt-4"
             v-if="showErrorMessage"
@@ -36,30 +31,29 @@
           >
             {{ errorMessage }}
           </v-alert>
-          <v-row dense class="ma-0 mt-6 w-full">
-            <v-col md="6" cols="12">
-              <v-btn
-                @click="$router.push('/auth/login')"
-                large
-                block
-                outlined
-                depressed
-                color="accent"
-                >Kembali</v-btn
-              >
-            </v-col>
-            <v-col>
-              <v-btn
-                @click="onClickLogin"
-                :loading="isLoading"
-                large
-                block
-                depressed
-                color="accent"
-                >Konfirmasi</v-btn
-              >
-            </v-col>
-          </v-row>
+          <v-btn
+            @click="onSubmit"
+            :disabled="!form.email || isLoading"
+            class="mt-4"
+            :loading="isLoading"
+            block
+            large
+            depressed
+            color="accent"
+            >Submit</v-btn
+          >
+          <v-btn
+            @click="$router.push('/auth/login')"
+            class="mt-4"
+            block
+            large
+            depressed
+            text
+            color="secondary"
+          >
+            <v-icon dense class="mr-1">mdi-arrow-left</v-icon>
+            Kembali ke login</v-btn
+          >
         </v-card>
       </v-col>
     </v-row>
@@ -82,29 +76,31 @@ export default class AuthForgotPassword extends Vue {
   errorMessage = "";
 
   form = {
-    key: "",
-    password: "",
+    email: "",
   };
 
   authApi = new AuthApi();
 
-  async onClickLogin() {
-    if (!this.form.key || !this.form.password) return;
+  $snackbar: any;
+
+  async onSubmit() {
+    if (!this.form.email) return;
     this.showErrorMessage = false;
     this.isLoading = true;
     try {
-      const response = await this.authApi.login(this.form);
+      const response = await this.authApi.resetPasswordRequest(this.form.email);
       if (response.data.status !== "SUCCESS") {
         this.showErrorMessage = true;
         this.errorMessage = response.data.message;
         return;
       }
-      this.$store.commit("auth/setAuth", {
-        token: response.data.data.accessToken,
-        user: response.data.data.user,
+      this.$snackbar.open({
+        text: "Kami Telah Mengirim Tautan Untuk Mereset Password, Silahkan Cek Email Kamu!",
+        position: "bottom-center",
       });
+      await this.$helpers.shortSetTimeOut(1000);
       this.$nextTick(() => {
-        window.location.reload();
+        this.$router.push("/auth/login");
       });
     } catch (error: any) {
       this.showErrorMessage = true;

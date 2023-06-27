@@ -26,13 +26,11 @@
                   outlined
                   v-model="form.key"
                   label="Masukan  Username Atau Email"
-                  class="mt-2"
                   hide-details="auto"
                 ></v-text-field>
               </v-col>
               <v-col class="mt-3" cols="12">
                 <v-text-field
-                  class="mt-2"
                   v-model="form.password"
                   @click:append="showPassword = !showPassword"
                   :type="showPassword ? 'text' : 'password'"

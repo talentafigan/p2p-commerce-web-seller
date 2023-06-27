@@ -25,6 +25,11 @@ const routes: Array<RouteConfig> = [
     path: "/auth/forgot-password",
     component: Module.authForgotPassword,
   },
+  {
+    name: "authResetPassword",
+    path: "/auth/reset-password",
+    component: Module.authResetPassword,
+  },
 ];
 
 const router = new VueRouter({
