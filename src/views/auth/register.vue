@@ -6,7 +6,7 @@
           outlined
           elevation="0"
           rounded="0"
-          class="py-12 px-6 rounded-lg d-flex justify-center align-start flex-column"
+          class="py-12 px-6 d-flex justify-center align-start flex-column"
         >
           <div class="d-flex justify-center flex-column align-start w-full">
             <span class="text-h5 font-weight-bold">Buat akunmu</span>

@@ -5,7 +5,6 @@
         <v-card
           outlined
           elevation="0"
-          rounded="lg"
           class="py-12 px-6 d-flex justify-center align-start flex-column"
         >
           <div class="d-flex justify-center flex-column align-start w-full">

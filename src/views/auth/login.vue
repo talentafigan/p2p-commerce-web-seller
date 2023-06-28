@@ -6,7 +6,7 @@
           outlined
           elevation="0"
           rounded="0"
-          class="py-12 px-6 rounded-lg d-flex justify-center align-start flex-column"
+          class="py-12 px-6 d-flex justify-center align-start flex-column"
         >
           <div class="d-flex justify-center flex-column align-start w-full">
             <span class="text-h5 font-weight-bold">Masuk</span>
@@ -19,11 +19,12 @@
               ></span
             >
           </div>
-          <v-form @submit.prevent="onClickLogin" class="mt-3">
+          <v-form ref="formLogin" @submit.prevent="onClickLogin" class="mt-5">
             <v-row dense class="ma-0">
               <v-col cols="12">
                 <v-text-field
                   outlined
+                  :rules="rules.key"
                   v-model="form.key"
                   label="Masukan  Username Atau Email"
                   hide-details="auto"
@@ -32,6 +33,7 @@
               <v-col class="mt-3" cols="12">
                 <v-text-field
                   v-model="form.password"
+                  :rules="rules.password"
                   @click:append="showPassword = !showPassword"
                   :type="showPassword ? 'text' : 'password'"
                   outlined
@@ -62,7 +64,7 @@
             @click="onClickLogin"
             class="mt-4"
             block
-            :disabled="!form.key || !form.password"
+            :disabled="isLoading"
             :loading="isLoading"
             large
             depressed
@@ -84,6 +86,7 @@ import { ProfileApi } from "@/api/profile.api";
 @Component
 export default class AuthLogin extends Vue {
   $helpers: any;
+  $refs: any;
   isLoading = false;
 
   showPassword = false;
@@ -96,11 +99,16 @@ export default class AuthLogin extends Vue {
     password: "",
   };
 
+  rules = {
+    key: [(v: string) => !!v || "Wajib di isi."],
+    password: [(v: string) => !!v || "Wajib di isi."],
+  };
+
   authApi = new AuthApi();
   profileApi = new ProfileApi();
 
   async onClickLogin() {
-    if (!this.form.key || !this.form.password) return;
+    if (!this.$refs.formLogin.validate()) return;
     this.showErrorMessage = false;
     this.isLoading = true;
     try {
