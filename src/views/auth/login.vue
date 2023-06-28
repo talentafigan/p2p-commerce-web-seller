@@ -23,8 +23,8 @@
             <v-row dense class="ma-0">
               <v-col cols="12">
                 <v-text-field
-                  outlined
                   :rules="rules.key"
+                  solo
                   v-model="form.key"
                   label="Masukan  Username Atau Email"
                   hide-details="auto"
@@ -34,9 +34,9 @@
                 <v-text-field
                   v-model="form.password"
                   :rules="rules.password"
+                  solo
                   @click:append="showPassword = !showPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  outlined
                   :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   label="Masukan Password"
                   hide-details="auto"
@@ -62,7 +62,7 @@
           </v-alert>
           <v-btn
             @click="onClickLogin"
-            class="mt-4"
+            class="mt-6"
             block
             :disabled="isLoading"
             :loading="isLoading"
