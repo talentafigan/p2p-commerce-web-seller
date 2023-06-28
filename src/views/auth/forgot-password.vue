@@ -5,6 +5,7 @@
         <v-card
           outlined
           elevation="0"
+          rounded="0"
           class="py-12 px-6 d-flex justify-center align-start flex-column"
         >
           <div class="d-flex justify-center flex-column align-start w-full">
@@ -15,7 +16,7 @@
             </span>
           </div>
           <v-text-field
-            outlined
+            solo
             v-model="form.email"
             label="Masukan Email Terdaftar"
             class="w-full mt-4"
@@ -32,8 +33,8 @@
           </v-alert>
           <v-btn
             @click="onSubmit"
-            :disabled="!form.email || isLoading"
-            class="mt-4"
+            :disabled="isLoading"
+            class="mt-6"
             :loading="isLoading"
             block
             large

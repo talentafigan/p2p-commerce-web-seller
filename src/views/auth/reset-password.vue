@@ -29,7 +29,7 @@
           outlined
           elevation="0"
           rounded="0"
-          class="py-12 px-6 rounded-lg d-flex justify-center align-start flex-column"
+          class="py-12 px-6 d-flex justify-center align-start flex-column"
         >
           <div class="d-flex justify-center flex-column align-start w-full">
             <span class="text-h5 font-weight-bold">Buat Password Baru</span>
@@ -45,7 +45,7 @@
                   v-model="form.password"
                   @click:append="showPassword = !showPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  outlined
+                  solo
                   :rules="rules.password"
                   :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   label="Masukan Password Baru"
@@ -57,7 +57,7 @@
                   v-model="form.confirmPassword"
                   @click:append="showConfirmPassword = !showConfirmPassword"
                   :type="showConfirmPassword ? 'text' : 'password'"
-                  outlined
+                  solo
                   :rules="rules.confirmPassword"
                   :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   label="Konfirmasi Password Baru"
@@ -78,7 +78,7 @@
           <v-btn
             @click="onSubmit"
             :disabled="isLoading"
-            class="mt-4"
+            class="mt-6"
             block
             :loading="isLoading"
             large
