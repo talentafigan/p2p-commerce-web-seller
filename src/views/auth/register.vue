@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-row align="center" justify="center" class="ma-0 w-full" dense no-gutters>
-      <v-col cols="4 ma-4">
+      <v-col cols="4">
         <v-card
           outlined
           elevation="0"
@@ -23,7 +23,7 @@
             <v-row dense class="ma-0">
               <v-col cols="12" class="mt-3">
                 <v-text-field
-                  outlined
+                  solo
                   :rules="rules.fullname"
                   v-model="form.fullname"
                   label="Nama Lengkap"
@@ -32,7 +32,7 @@
               </v-col>
               <v-col cols="12" class="mt-3">
                 <v-text-field
-                  outlined
+                  solo
                   :rules="rules.username"
                   v-model="form.username"
                   label="Username"
@@ -41,16 +41,16 @@
               </v-col>
               <v-col cols="12" class="mt-3">
                 <v-text-field
-                  outlined
                   :rules="rules.email"
                   v-model="form.email"
                   label="Email"
+                  solo
                   hide-details="auto"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" class="mt-3">
                 <v-text-field
-                  outlined
+                  solo
                   prefix="+62"
                   :rules="rules.phone"
                   v-model="form.phone"
@@ -60,10 +60,10 @@
               </v-col>
               <v-col class="mt-3" cols="12">
                 <v-text-field
+                  solo
                   v-model="form.password"
                   @click:append="showPassword = !showPassword"
                   :type="showPassword ? 'text' : 'password'"
-                  outlined
                   :rules="rules.password"
                   :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   label="Password"
@@ -81,9 +81,13 @@
           >
             {{ errorMessage }}
           </v-alert>
+          <span class="mt-8 text-subtitle-2"
+            >Dengan mendaftar anda menyetujui
+            <span class="primary--text">Syarat & Ketentuan</span></span
+          >
           <v-btn
             @click="onClickRegister"
-            class="mt-8"
+            class="mt-4"
             block
             :disabled="isLoading"
             :loading="isLoading"
