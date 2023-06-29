@@ -167,7 +167,7 @@ export default class AuthResetPassword extends Vue {
     }
     try {
       const response = await this.authApi.resetPasswordCheckCode(this.token);
-      if (response.data.code !== "SUCCESS") {
+      if (response.data.status !== "SUCCESS") {
         this.showDialogInvalidUrl = true;
       }
     } catch (error) {

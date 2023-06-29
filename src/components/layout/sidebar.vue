@@ -68,7 +68,7 @@ export default class LayoutSidebar extends Vue {
       child: [
         {
           title: "Produk",
-          icon: "mdi-account-tie",
+          icon: "mdi-package-variant-closed",
           to: "/seller",
         },
         {
