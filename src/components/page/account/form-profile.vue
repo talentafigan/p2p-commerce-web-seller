@@ -1,70 +1,56 @@
 <template>
-  <v-row dense no-gutters class="w-full">
-    <v-col class="pb-2" cols="12">
-      <v-row class="ma-0">
-        <v-col md="4">
-          <v-card elevation="0" class="pa-2">
-            <common-image-dropzone />
-          </v-card>
-        </v-col>
-        <v-col md="8">
-          <v-card elevation="0" class="pa-2">
-            <span class="text-h6">Data Diri</span>
-            <v-form ref="form" @submit.prevent="onSave" class="mt-4">
-              <v-text-field
-                label="Nama Lengkap"
-                :rules="rules.fullname"
-                hide-details="auto"
-                v-model="form.fullname"
-              ></v-text-field>
-              <v-text-field
-                readonly
-                :rules="rules.username"
-                class="mt-4"
-                v-model="form.username"
-                label="Username"
-                hide-details="auto"
-              ></v-text-field>
-              <v-text-field
-                label="Email"
-                :rules="rules.email"
-                class="mt-4"
-                v-model="form.email"
-                hide-details="auto"
-              ></v-text-field>
-              <v-text-field
-                v-model="form.phone"
-                class="mt-4"
-                :rules="rules.phone"
-                label="Nomor Telepon"
-                hide-details="auto"
-                prefix="+62"
-              ></v-text-field>
-              <v-alert
-                class="w-full ma-0 mt-4"
-                v-if="showErrorMessage"
-                dense
-                type="error"
-                text
-              >
-                {{ errorMessage }}
-              </v-alert>
-              <v-btn
-                @click="onSave"
-                class="mt-4"
-                :disabled="isLoading"
-                :loading="isLoading"
-                depressed
-                color="accent"
-                >Simpan</v-btn
-              >
-            </v-form>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-col>
-    <v-col></v-col>
-  </v-row>
+  <v-card elevation="0" class="pa-6">
+    <span class="text-h6">Data Diri</span>
+    <v-form ref="form" @submit.prevent="onSave" class="mt-4">
+      <v-text-field
+        label="Nama Lengkap"
+        :rules="rules.fullname"
+        hide-details="auto"
+        v-model="form.fullname"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        :rules="rules.username"
+        class="mt-4"
+        v-model="form.username"
+        label="Username"
+        hide-details="auto"
+      ></v-text-field>
+      <v-text-field
+        label="Email"
+        :rules="rules.email"
+        class="mt-4"
+        v-model="form.email"
+        hide-details="auto"
+      ></v-text-field>
+      <v-text-field
+        v-model="form.phone"
+        class="mt-4"
+        :rules="rules.phone"
+        label="Nomor Telepon"
+        hide-details="auto"
+        prefix="+62"
+      ></v-text-field>
+      <v-alert
+        class="w-full ma-0 mt-4"
+        v-if="showErrorMessage"
+        dense
+        type="error"
+        text
+      >
+        {{ errorMessage }}
+      </v-alert>
+      <v-btn
+        @click="onSave"
+        class="mt-4"
+        :disabled="isLoading"
+        :loading="isLoading"
+        depressed
+        color="accent"
+        >Simpan</v-btn
+      >
+    </v-form>
+  </v-card>
 </template>
 
 <script lang="ts">
