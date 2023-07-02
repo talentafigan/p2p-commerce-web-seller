@@ -7,7 +7,11 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item key="0">
-          <page-account-form-profile />
+          <v-row dense class="ma-0">
+            <v-col md="7">
+              <page-account-form-profile />
+            </v-col>
+          </v-row>
         </v-tab-item>
         <v-tab-item key="1">
           <v-row dense class="ma-0">
