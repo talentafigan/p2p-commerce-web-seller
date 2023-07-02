@@ -40,6 +40,15 @@
                 hide-details="auto"
                 prefix="+62"
               ></v-text-field>
+              <v-alert
+                class="w-full ma-0 mt-4"
+                v-if="showErrorMessage"
+                dense
+                type="error"
+                text
+              >
+                {{ errorMessage }}
+              </v-alert>
               <v-btn
                 @click="onSave"
                 class="mt-4"
