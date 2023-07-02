@@ -10,14 +10,16 @@
         <v-col md="8">
           <v-card elevation="0" class="pa-2">
             <span class="text-h6">Data Diri</span>
-            <v-form class="mt-4">
+            <v-form ref="form" @submit.prevent="onSave" class="mt-4">
               <v-text-field
                 label="Nama Lengkap"
+                :rules="rules.fullname"
                 hide-details="auto"
                 v-model="form.fullname"
               ></v-text-field>
               <v-text-field
                 readonly
+                :rules="rules.username"
                 class="mt-4"
                 v-model="form.username"
                 label="Username"
@@ -25,6 +27,7 @@
               ></v-text-field>
               <v-text-field
                 label="Email"
+                :rules="rules.email"
                 class="mt-4"
                 v-model="form.email"
                 hide-details="auto"
@@ -32,11 +35,20 @@
               <v-text-field
                 v-model="form.phone"
                 class="mt-4"
+                :rules="rules.phone"
                 label="Nomor Telepon"
                 hide-details="auto"
                 prefix="+62"
               ></v-text-field>
-              <v-btn class="mt-4" color="primary" depressed>Simpan</v-btn>
+              <v-btn
+                @click="onSave"
+                class="mt-4"
+                :disabled="isLoading"
+                :loading="isLoading"
+                depressed
+                color="accent"
+                >Simpan</v-btn
+              >
             </v-form>
           </v-card>
         </v-col>
@@ -58,6 +70,64 @@ export default class PageAccountFormProfile extends Vue {
     username: "",
     phone: "",
     email: "",
+  };
+
+  $refs: any;
+
+  showErrorMessage = false;
+  isLoading = false;
+  errorMessage = "";
+
+  formatEmailValidator(val: string) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(val);
+  }
+
+  async onSave() {
+    if (!this.$refs.form.validate()) return;
+    this.showErrorMessage = false;
+    this.isLoading = true;
+    try {
+      const response = await this.profileApi.update({
+        ...this.form,
+        phone: "62" + this.form.phone,
+      });
+      if (response.data.status !== "SUCCESS") {
+        this.showErrorMessage = true;
+        this.errorMessage = response.data.message;
+        return;
+      }
+      this.$snackbar.open({
+        text: "Berhasil Update Profil!",
+      });
+    } catch (error: any) {
+      this.showErrorMessage = true;
+      this.errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  rules = {
+    fullname: [(v: any) => !!v || "Nama lengkap harus diisi."],
+    email: [
+      (v: string) => this.formatEmailValidator(v) || "Format email salah.",
+    ],
+    phone: [
+      (v: any) => !!v || "No. Telepon harus diisi.",
+      (v: string) => /\d+/.test(v) || "No. Telepon harus berupa angka.",
+      (v: string | any[]) =>
+        (v && v.length <= 13) || "No. Telepon Maximal 15 digit.",
+    ],
+    username: [
+      (v: any) => !!v || "Username harus diisi.",
+      (v: string) =>
+        /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(v) === false ||
+        "Username hanya boleh berupa huruf dan nomor",
+    ],
   };
 
   profileApi = new ProfileApi();
