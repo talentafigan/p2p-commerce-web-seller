@@ -106,11 +106,21 @@
               >Bukti Pembayaran</span
             >
           </div>
-          <v-card class="mt-2 pa-4" outlined>
+          <v-card
+            v-if="
+              transactionDetail?.productTransactionStatus?.productTransactionStatusId === 3
+            "
+            class="mt-2 pa-4"
+            outlined
+          >
             <v-row align="center" class="ma-0" no-gutters dense>
               <v-col cols="12">
                 <v-row class="ma-0" align="center" no-gutters dense>
-                  <v-col style="border: dashed rgb(209, 209, 209) 1px" class="pa-2 rounded-lg" cols="3">
+                  <v-col
+                    style="border: dashed rgb(209, 209, 209) 1px"
+                    class="pa-2 rounded-lg"
+                    cols="3"
+                  >
                     <img
                       class="cursor-pointer"
                       @click="
