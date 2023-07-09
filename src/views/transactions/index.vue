@@ -100,15 +100,28 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-divider class="my-4"></v-divider>
-          <div class="d-flex justify-space-between align-center flex-row">
+          <v-divider
+            v-if="
+              transactionDetail?.productTransactionStatus
+                ?.productTransactionStatusId === 3
+            "
+            class="my-4"
+          ></v-divider>
+          <div
+            v-if="
+              transactionDetail?.productTransactionStatus
+                ?.productTransactionStatusId === 3
+            "
+            class="d-flex justify-space-between align-center flex-row"
+          >
             <span class="font-weight-bold text-subtitle-2"
               >Bukti Pembayaran</span
             >
           </div>
           <v-card
             v-if="
-              transactionDetail?.productTransactionStatus?.productTransactionStatusId === 3
+              transactionDetail?.productTransactionStatus
+                ?.productTransactionStatusId === 3
             "
             class="mt-2 pa-4"
             outlined
