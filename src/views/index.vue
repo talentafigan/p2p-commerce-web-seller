@@ -71,12 +71,12 @@ export default class Index extends Vue {
   analytics = [
     {
       title: "Transaksi",
-      content: "",
+      content: "0",
       description: "+0% of previous month",
     },
     {
       title: "Penjualan",
-      content: "",
+      content: "0",
       description: "+0% of previous month",
     },
   ];
@@ -107,7 +107,7 @@ export default class Index extends Vue {
   }
 
   mounted() {
-    this.fetchAnalytic();
+    // this.fetchAnalytic();
   }
 }
 </script>
