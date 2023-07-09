@@ -26,7 +26,6 @@
 </template>
 
 <script lang="ts">
-import { ProfileApi } from "@/api/profile.api";
 import Vue from "vue";
 import Component from "vue-class-component";
 

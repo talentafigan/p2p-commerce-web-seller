@@ -67,9 +67,9 @@ export default class LayoutSidebar extends Vue {
       title: "Data",
       child: [
         {
-          title: "Produk",
-          icon: "mdi-package-variant-closed",
-          to: "/seller",
+          title: "Kelas",
+          icon: "mdi-bookmark-box-outline",
+          to: "/product",
         },
         {
           title: "Transaksi",

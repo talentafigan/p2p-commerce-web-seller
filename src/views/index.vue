@@ -5,7 +5,7 @@
         <v-card outlined class="px-5 py-5">
           <v-row dense class="ma-0 w-full">
             <v-col cols="12">
-              <span class="text-h6">Summary report</span>
+              <span class="text-h6">Ringkasan</span>
               <v-row class="w-full mt-3 ma-0">
                 <v-col v-for="(item, Index) in analytics" :key="Index" md="3">
                   <page-dashboard-card-analytic v-bind="item" />
@@ -21,18 +21,27 @@
         <v-card outlined class="px-5 py-5">
           <v-row class="ma-0 w-full">
             <v-col cols="12">
-              <span class="text-h6">Most sales product</span>
+              <span class="text-h6">Kelas dengan transaksi terbanyak</span>
               <v-card rounded="0" outlined class="w-full mt-4">
                 <v-simple-table>
                   <template v-slot:default>
                     <thead>
                       <tr>
-                        <th class="text-left">Product Name</th>
-                        <th>Category</th>
-                        <th>Transaction</th>
+                        <th class="text-left">Nama Kelas</th>
+                        <th>Kategori</th>
+                        <th>Jumlah transaksi</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <tr v-if="mostSalesProduct.length === 0">
+                        <td colspan="3">
+                          <div
+                            class="w-full d-flex justify-center flex-column align-center"
+                          >
+                            <span>Data not found.</span>
+                          </div>
+                        </td>
+                      </tr>
                       <tr v-for="item in mostSalesProduct" :key="item.name">
                         <td>{{ item.name }}</td>
                         <td>{{ item.category }}</td>
@@ -53,52 +62,52 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { AnalyticApi } from "@/api/analytic.api";
 
 @Component
 export default class Index extends Vue {
+  analyticApi = new AnalyticApi();
+
   analytics = [
     {
-      color: "#E1BEE7",
-      title: "Consultation",
-      content: "300",
-      description: "+5% of previous month",
+      title: "Transaksi",
+      content: "",
+      description: "+0% of previous month",
     },
     {
-      color: "#FFF59D",
-      title: "Transaction",
-      content: "240",
-      description: "1.239 All time transaction",
-    },
-    {
-      color: "#E8EAF6",
-      title: "Total student",
-      content: "2.300",
-      description: "+174 New student",
-    },
-    {
-      color: "#E1BEE7",
-      title: "Total mentor",
-      content: "950",
-      description: "+38 New mentor",
+      title: "Penjualan",
+      content: "",
+      description: "+0% of previous month",
     },
   ];
 
-  mostSalesProduct = [
-    {
-      name: "Kelas Pemorograman Dasar",
-      category: "Computer Science",
-      sales: "3.299",
-    },
-    {
-      name: "Kelas Digital Marketing",
-      category: "Business",
-      sales: "2.388",
-    },
-    {
-      name: "Kelas Hukum & Seller Bisnis",
-      category: "Business",
-      sales: "388",
-    },
-  ];
+  mostSalesProduct = [] as { name: string; category: string; sales: string }[];
+
+  $snackbar: any;
+
+  async fetchAnalytic() {
+    try {
+      const resp = await this.analyticApi.getAnalyticSeller();
+      if (resp.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: resp.data.message,
+        });
+        return;
+      }
+      this.analytics[0].content = resp.data.data.transaction;
+      this.analytics[1].content = resp.data.data.sales;
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    }
+  }
+
+  mounted() {
+    this.fetchAnalytic();
+  }
 }
 </script>

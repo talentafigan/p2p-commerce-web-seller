@@ -35,6 +35,11 @@ const routes: Array<RouteConfig> = [
     path: "/account/profile",
     component: Module.accountProfile,
   },
+  {
+    name: "transaction",
+    path: "/transaction",
+    component: Module.transaction,
+  },
 ];
 
 const router = new VueRouter({

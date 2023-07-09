@@ -1,18 +1,11 @@
 import moment from "moment";
-moment.locale();
+moment.locale('id');
 export default class Helpers {
-  formatEmailValidator(val: string) {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(val);
+  dateShortFormat(date: string) {
+    return moment(date).format("YYYY-MM-DD");
   }
-  intialString(val: any) {
-    let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
-    let initials = [...val.matchAll(rgx)] || [];
-    initials = (
-      (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
-    ).toUpperCase();
-    return initials;
+  fullDate(date: string) {
+    return moment(date).format("dddd, D MMMM YYYY, HH:mm");
   }
   generateUUID = () => {
     var d = new Date().getTime(); //Timestamp
@@ -49,5 +42,27 @@ export default class Helpers {
     var dateNow = moment(new Date());
     if (moment(date).diff(dateNow, type) > pass) return true;
     return false;
+  }
+  intialString(val: any) {
+    let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+    let initials = [...val.matchAll(rgx)] || [];
+    initials = (
+      (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
+    ).toUpperCase();
+    return initials;
+  }
+  currencyFormat(val: number) {
+    if (!val) return 0;
+    let formatter = new Intl.NumberFormat("ja-JP", {
+      style: "currency",
+      currency: "JPY",
+      currencyDisplay: "code",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 20,
+    })
+      .format(val)
+      .replace("JPY", "")
+      .trim();
+    return formatter;
   }
 }
