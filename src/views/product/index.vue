@@ -1,0 +1,151 @@
+<template>
+  <layout-container brandTitle="Kelas">
+    <template #tools-navigation>
+      <v-btn @click="$router.push('/product/create')" depressed color="primary">
+        <v-icon small class="mr-1">mdi-plus</v-icon>
+        Tambah Kelas</v-btn
+      >
+    </template>
+    <v-card class="w-full mt-1" outlined>
+      <v-data-table
+        :headers="tableHeader"
+        :items="product"
+        :items-per-page="5"
+        class="elevation-0 w-full"
+      >
+        <template #[`item.productPrice`]="row">
+          <span class="text-subtitle-2"
+            >Rp {{ $helpers.currencyFormat(row.item.productPrice) }}</span
+          >
+        </template>
+        <template #[`item.action`]="row">
+          <v-menu bottom offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-on="on" v-bind="attrs" depressed small color="primary"
+                >Aksi
+                <v-icon class="ml-1" dense small>mdi-chevron-down</v-icon>
+              </v-btn>
+            </template>
+            <v-list nav dense>
+              <v-list-item-group color="primary">
+                <v-list-item
+                  @click="$router.push('/product/' + row.item.productId)"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title>Detail</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="onClickDelete(row.item.productId)">
+                  <v-list-item-content>
+                    <v-list-item-title>Hapus</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
+    </v-card>
+  </layout-container>
+</template>
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
+import { ProductApi } from "@/api/product.api";
+
+@Component
+export default class Product extends Vue {
+  productApi = new ProductApi();
+  $helpers: any;
+  dialogFilter = false;
+
+  tableHeader = [
+    {
+      text: "Nama",
+      value: "productName",
+      sortable: false,
+    },
+    {
+      text: "Harga",
+      value: "productPrice",
+      sortable: false,
+    },
+    {
+      text: "Karegori",
+      value: "productCategories.productCategoryName",
+      sortable: false,
+    },
+    {
+      text: "Status",
+      value: "status.statusName",
+      sortable: false,
+    },
+    {
+      text: "Aksi",
+      value: "action",
+      sortable: false,
+    },
+  ];
+
+  product = [] as any[];
+
+  $snackbar: any;
+
+  isLoading = false;
+
+  async fetchProduct() {
+    this.isLoading = true;
+    try {
+      const resp = await this.productApi.get({
+        page: 0,
+        size: 1000,
+      });
+      if (resp.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: resp.data.message,
+        });
+        return;
+      }
+      this.product = resp.data.data.content;
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async onClickDelete(id: any) {
+    try {
+      const response = await this.productApi.delete(id);
+      if (response.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: response.data.message,
+        });
+        return;
+      }
+      this.$snackbar.open({
+        text: "Berhasil Menghapus kelas!",
+      });
+      this.fetchProduct();
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  mounted() {
+    this.fetchProduct();
+  }
+}
+</script>

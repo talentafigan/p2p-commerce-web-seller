@@ -36,9 +36,24 @@ const routes: Array<RouteConfig> = [
     component: Module.accountProfile,
   },
   {
-    name: "transaction",
-    path: "/transaction",
-    component: Module.transaction,
+    name: "product-transaction",
+    path: "/product-transaction",
+    component: Module.productTransaction,
+  },
+  {
+    name: "product",
+    path: "/product",
+    component: Module.product,
+  },
+  {
+    name: "product",
+    path: "/product/create",
+    component: Module.productCreate,
+  },
+  {
+    name: "product",
+    path: "/product/:id",
+    component: Module.productDetail,
   },
 ];
 

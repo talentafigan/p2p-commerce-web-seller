@@ -5,5 +5,8 @@ export default {
   authForgotPassword: require("@/views/auth/forgot-password.vue").default,
   authResetPassword: require("@/views/auth/reset-password.vue").default,
   accountProfile: require("@/views/account/profile.vue").default,
-  transaction: require("@/views/transactions/index.vue").default
+  productTransaction: require("@/views/product-transaction/index.vue").default,
+  product: require("@/views/product/index.vue").default,
+  productCreate: require("@/views/product/create.vue").default,
+  productDetail: require("@/views/product/_id.vue").default,
 };

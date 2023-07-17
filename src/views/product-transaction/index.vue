@@ -10,22 +10,22 @@
           <div class="d-flex justify-space-between flex-row w-full">
             <span class="text-subtitle-2">ID. Transaksi </span>
             <span class="text-subtitle-2">{{
-              transactionDetail.productTransactionId
-                ? transactionDetail.productTransactionId
+              productTransactionDetail.productTransactionId
+                ? productTransactionDetail.productTransactionId
                 : "-"
             }}</span>
           </div>
           <div class="d-flex mt-2 justify-space-between flex-row w-full">
             <span class="text-subtitle-2">Tanggal Transaksi </span>
             <span class="text-subtitle-2">{{
-              $helpers.fullDate(transactionDetail.createDate)
+              $helpers.fullDate(productTransactionDetail.createDate)
             }}</span>
           </div>
           <div class="d-flex mt-2 justify-space-between flex-row w-full">
             <span class="text-subtitle-2">Status </span>
             <span class="text-subtitle-2">{{
-              transactionDetail.productTransactionStatus
-                ? transactionDetail.productTransactionStatus
+              productTransactionDetail.productTransactionStatus
+                ? productTransactionDetail.productTransactionStatus
                     .productTransactionStatusName
                 : "-"
             }}</span>
@@ -33,7 +33,9 @@
           <div class="d-flex mt-2 justify-space-between flex-row w-full">
             <span class="text-subtitle-2">Student </span>
             <span class="text-subtitle-2 font-weight-bold">{{
-              transactionDetail.client ? transactionDetail.client.fullname : "-"
+              productTransactionDetail.client
+                ? productTransactionDetail.client.fullname
+                : "-"
             }}</span>
           </div>
           <v-divider class="my-4"></v-divider>
@@ -42,7 +44,9 @@
           </div>
           <v-card
             @click="
-              $router.push('/product/' + transactionDetail?.product.productId)
+              $router.push(
+                '/product/' + productTransactionDetail?.product.productId
+              )
             "
             class="cursor-pointer mt-2 pa-4"
             outlined
@@ -60,16 +64,16 @@
                   <v-col cols="9">
                     <div class="px-4 d-flex justify-center flex-column">
                       <span class="text-subtitle-1 font-weight-bold">{{
-                        transactionDetail.product
-                          ? transactionDetail.product?.productName
+                        productTransactionDetail.product
+                          ? productTransactionDetail.product?.productName
                           : "-"
                       }}</span>
                       <span class="text-subtitle-2 mt-2"
                         >Rp
                         {{
-                          transactionDetail.product
+                          productTransactionDetail.product
                             ? $helpers.currencyFormat(
-                                transactionDetail.product?.productPrice
+                                productTransactionDetail.product?.productPrice
                               )
                             : "-"
                         }}</span
@@ -89,9 +93,9 @@
                   <span class="text-subtitle-2 mt-2"
                     >Rp
                     {{
-                      transactionDetail.product
+                      productTransactionDetail.product
                         ? $helpers.currencyFormat(
-                            transactionDetail.product?.productPrice
+                            productTransactionDetail.product?.productPrice
                           )
                         : "-"
                     }}</span
@@ -102,14 +106,14 @@
           </v-card>
           <v-divider
             v-if="
-              transactionDetail?.productTransactionStatus
+              productTransactionDetail?.productTransactionStatus
                 ?.productTransactionStatusId === 3
             "
             class="my-4"
           ></v-divider>
           <div
             v-if="
-              transactionDetail?.productTransactionStatus
+              productTransactionDetail?.productTransactionStatus
                 ?.productTransactionStatusId === 3
             "
             class="d-flex justify-space-between align-center flex-row"
@@ -120,7 +124,7 @@
           </div>
           <v-card
             v-if="
-              transactionDetail?.productTransactionStatus
+              productTransactionDetail?.productTransactionStatus
                 ?.productTransactionStatusId === 3
             "
             class="mt-2 pa-4"
@@ -164,7 +168,7 @@
     <v-card class="w-full mt-3" outlined>
       <v-data-table
         :headers="tableHeader"
-        :items="transaction"
+        :items="productTransaction"
         :items-per-page="5"
         class="elevation-0 w-full"
       >
@@ -226,19 +230,15 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { TransactionApi } from "@/api/transaction.api";
+import { ProductTransactionApi } from "@/api/product-transaction.api";
 
 @Component
 export default class ProductTransaction extends Vue {
-  transactionApi = new TransactionApi();
+  productTransactionApi = new ProductTransactionApi();
   $helpers: any;
   dialogFilter = false;
+
   tableHeader = [
-    {
-      text: "Student",
-      value: "client.fullname",
-      sortable: false,
-    },
     {
       text: "Kelas",
       value: "product.productName",
@@ -247,6 +247,11 @@ export default class ProductTransaction extends Vue {
     {
       text: "Tanggal",
       value: "createDate",
+      sortable: false,
+    },
+    {
+      text: "Pembeli",
+      value: "client.fullname",
       sortable: false,
     },
     {
@@ -268,9 +273,9 @@ export default class ProductTransaction extends Vue {
 
   dialogDetail = false;
 
-  transaction = [] as any[];
+  productTransaction = [] as any[];
 
-  transactionDetail = {} as any;
+  productTransactionDetail = {} as any;
 
   $snackbar: any;
 
@@ -280,17 +285,17 @@ export default class ProductTransaction extends Vue {
     window.open(proofUrl, "_blank");
   }
 
-  async fetchTransaction() {
+  async fetchProductTransaction() {
     this.isLoading = true;
     try {
-      const resp = await this.transactionApi.get();
+      const resp = await this.productTransactionApi.get();
       if (resp.data.status !== "SUCCESS") {
         this.$snackbar.open({
           text: resp.data.message,
         });
         return;
       }
-      this.transaction = resp.data.data;
+      this.productTransaction = resp.data.data;
     } catch (error: any) {
       const errorMessage = error.response
         ? error.response.message
@@ -305,14 +310,14 @@ export default class ProductTransaction extends Vue {
 
   async onClickDetail(id: any) {
     try {
-      const resp = await this.transactionApi.getDetail(id);
+      const resp = await this.productTransactionApi.getDetail(id);
       if (resp.data.status !== "SUCCESS") {
         this.$snackbar.open({
           text: resp.data.message,
         });
         return;
       }
-      this.transactionDetail = resp.data.data;
+      this.productTransactionDetail = resp.data.data;
       this.dialogDetail = true;
     } catch (error: any) {
       const errorMessage = error.response
@@ -325,7 +330,7 @@ export default class ProductTransaction extends Vue {
   }
 
   mounted() {
-    this.fetchTransaction();
+    this.fetchProductTransaction();
   }
 }
 </script>

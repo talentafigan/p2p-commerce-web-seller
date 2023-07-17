@@ -49,4 +49,8 @@ export default function setup() {
     "page-account-form-password",
     require("@/components/page/account/form-password.vue").default
   );
+  vue.component(
+    "page-product-form",
+    require("@/components/page/product/form.vue").default
+  );
 }

@@ -74,7 +74,7 @@ export default class LayoutSidebar extends Vue {
         {
           title: "Transaksi",
           icon: "mdi-list-box-outline",
-          to: "/transaction",
+          to: "/product-transaction",
         },
       ],
     },
