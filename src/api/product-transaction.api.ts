@@ -12,4 +12,10 @@ export class ProductTransactionApi {
   delete(id: any) {
     return Axios.delete("/api/product-transaction/" + id);
   }
+  approve(id: any, data?: any) {
+    return Axios.put("/api/product-transaction/approve/" + id, data);
+  }
+  updateStatus(id: any, data?: any) {
+    return Axios.put("/api/product-transaction/" + id, data);
+  }
 }

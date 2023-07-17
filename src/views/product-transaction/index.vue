@@ -6,13 +6,11 @@
           <span class="text-h6">Detail Transaksi</span>
         </v-card-title>
         <v-divider></v-divider>
-        <v-card class="pa-5">
+        <v-card v-if="productTransactionDetail !== null" class="pa-5">
           <div class="d-flex justify-space-between flex-row w-full">
             <span class="text-subtitle-2">ID. Transaksi </span>
             <span class="text-subtitle-2">{{
               productTransactionDetail.productTransactionId
-                ? productTransactionDetail.productTransactionId
-                : "-"
             }}</span>
           </div>
           <div class="d-flex mt-2 justify-space-between flex-row w-full">
@@ -25,19 +23,40 @@
             <span class="text-subtitle-2">Status </span>
             <span class="text-subtitle-2">{{
               productTransactionDetail.productTransactionStatus
-                ? productTransactionDetail.productTransactionStatus
-                    .productTransactionStatusName
-                : "-"
+                .productTransactionStatusName
+            }}</span>
+          </div>
+          <div
+            v-if="
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 6
+            "
+            class="d-flex mt-2 justify-space-between flex-row w-full"
+          >
+            <span class="text-subtitle-2">Tanggal pembatalan </span>
+            <span class="text-subtitle-2 font-weight-bold">{{
+              productTransactionDetail.createDate
+            }}</span>
+          </div>
+          <div
+            v-if="
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 6
+            "
+            class="d-flex mt-2 justify-space-between flex-row w-full"
+          >
+            <span class="text-subtitle-2">Dibatalkan oleh</span>
+            <span class="text-subtitle-2 font-weight-bold">{{
+              productTransactionDetail.canceledBy.userType.userTypeName
             }}</span>
           </div>
           <div class="d-flex mt-2 justify-space-between flex-row w-full">
-            <span class="text-subtitle-2">Student </span>
+            <span class="text-subtitle-2">Pembeli </span>
             <span class="text-subtitle-2 font-weight-bold">{{
-              productTransactionDetail.client
-                ? productTransactionDetail.client.fullname
-                : "-"
+              productTransactionDetail.client.fullname
             }}</span>
           </div>
+
           <v-divider class="my-4"></v-divider>
           <div class="d-flex justify-space-between align-center flex-row">
             <span class="font-weight-bold text-subtitle-2">Detail Kelas</span>
@@ -45,7 +64,7 @@
           <v-card
             @click="
               $router.push(
-                '/product/' + productTransactionDetail?.product.productId
+                '/product/' + productTransactionDetail.product.productId
               )
             "
             class="cursor-pointer mt-2 pa-4"
@@ -54,28 +73,24 @@
             <v-row align="center" class="ma-0" no-gutters dense>
               <v-col cols="8">
                 <v-row class="ma-0" align="center" no-gutters dense>
-                  <v-col cols="3">
+                  <v-col cols="4">
                     <img
-                      style="width: 100%; height: 70px; object-fit: cover"
-                      src="https://static.vecteezy.com/system/resources/thumbnails/004/579/363/small_2x/digital-marketing-and-seo-optimization-strategy-free-vector.jpg"
+                      style="width: 100%; height: 70px"
+                      :src="productTransactionDetail.product.image"
                       alt=""
                     />
                   </v-col>
-                  <v-col cols="9">
+                  <v-col cols="8">
                     <div class="px-4 d-flex justify-center flex-column">
                       <span class="text-subtitle-1 font-weight-bold">{{
-                        productTransactionDetail.product
-                          ? productTransactionDetail.product?.productName
-                          : "-"
+                        productTransactionDetail.product.productName
                       }}</span>
                       <span class="text-subtitle-2 mt-2"
                         >Rp
                         {{
-                          productTransactionDetail.product
-                            ? $helpers.currencyFormat(
-                                productTransactionDetail.product?.productPrice
-                              )
-                            : "-"
+                          $helpers.currencyFormat(
+                            productTransactionDetail.product.productPrice
+                          )
                         }}</span
                       >
                     </div>
@@ -93,11 +108,9 @@
                   <span class="text-subtitle-2 mt-2"
                     >Rp
                     {{
-                      productTransactionDetail.product
-                        ? $helpers.currencyFormat(
-                            productTransactionDetail.product?.productPrice
-                          )
-                        : "-"
+                      $helpers.currencyFormat(
+                        productTransactionDetail.product?.productPrice
+                      )
                     }}</span
                   >
                 </div>
@@ -106,15 +119,19 @@
           </v-card>
           <v-divider
             v-if="
-              productTransactionDetail?.productTransactionStatus
-                ?.productTransactionStatusId === 3
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 3 ||
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 4
             "
             class="my-4"
           ></v-divider>
           <div
             v-if="
-              productTransactionDetail?.productTransactionStatus
-                ?.productTransactionStatusId === 3
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 3 ||
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 4
             "
             class="d-flex justify-space-between align-center flex-row"
           >
@@ -124,8 +141,10 @@
           </div>
           <v-card
             v-if="
-              productTransactionDetail?.productTransactionStatus
-                ?.productTransactionStatusId === 3
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 3 ||
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 4
             "
             class="mt-2 pa-4"
             outlined
@@ -140,13 +159,9 @@
                   >
                     <img
                       class="cursor-pointer"
-                      @click="
-                        onPreviewProof(
-                          'https://www.ascomaxx.com/uploads/large/c08cae4be1fdea0f666b0e2a1a8e0cef.jpg'
-                        )
-                      "
+                      @click="onPreviewProof(productTransactionDetail.proof)"
                       style="width: 100%; height: 90px; object-fit: cover"
-                      src="https://www.ascomaxx.com/uploads/large/c08cae4be1fdea0f666b0e2a1a8e0cef.jpg"
+                      :src="productTransactionDetail.proof"
                       alt=""
                     />
                   </v-col>
@@ -156,12 +171,79 @@
             <div
               class="d-flex mt-5 w-full justify-center align-center flex-column"
             >
-              <v-btn block color="primary" small>Approve</v-btn>
-              <v-btn block class="mt-2" color="primary" outlined small
-                >Tolak bukti</v-btn
+              <v-btn
+                :loading="isLoadingUpdateStatus"
+                :disabled="isLoadingUpdateStatus"
+                @click="
+                  onClickUpdateStatus(
+                    productTransactionDetail.productTransactionId,
+                    5
+                  )
+                "
+                depressed
+                block
+                color="primary"
+                small
+                >Approve</v-btn
+              >
+              <v-btn
+                :loading="isLoadingUpdateStatus"
+                :disabled="isLoadingUpdateStatus"
+                @click="
+                  onClickUpdateStatus(
+                    productTransactionDetail.productTransactionId,
+                    4
+                  )
+                "
+                depressed
+                block
+                class="mt-2"
+                color="primary"
+                outlined
+                small
+                >Tolak</v-btn
               >
             </div>
           </v-card>
+        </v-card>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialogApprove"
+      @click.outside="
+        () => {
+          formApprove = {
+            productTransactionId: null,
+            note: null,
+          };
+        }
+      "
+      width="400px"
+    >
+      <v-card>
+        <v-card-title>
+          <span class="text-h6">Terima Pesanan</span>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card class="pa-5">
+          <v-textarea
+            solo
+            hide-details="auto"
+            label="Catatan"
+            rows="4"
+            v-model="formApprove.note"
+            placeholder="Catatan petunjuk pembayaran untuk pembeli."
+          ></v-textarea>
+          <v-btn
+            :loading="isLoadingApprove"
+            :disabled="isLoadingApprove || !formApprove.note"
+            depressed
+            class="mt-4"
+            @click="onConfirmApprove"
+            color="primary"
+            block
+            >Konfirmasi</v-btn
+          >
         </v-card>
       </v-card>
     </v-dialog>
@@ -205,7 +287,9 @@
                       .productTransactionStatusId === 1
                   "
                 >
-                  <v-list-item-content>
+                  <v-list-item-content
+                    @click="onClickApprove(row.item.productTransactionId)"
+                  >
                     <v-list-item-title>Terima Pesanan</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -215,7 +299,9 @@
                       .productTransactionStatusId === 1
                   "
                 >
-                  <v-list-item-content>
+                  <v-list-item-content
+                    @click="onClickCancel(row.item.productTransactionId)"
+                  >
                     <v-list-item-title>Tolak Pesanan</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -271,11 +357,116 @@ export default class ProductTransaction extends Vue {
     },
   ];
 
+  dialogApprove = false;
+
+  isLoadingApprove = false;
+
+  formApprove = {
+    productTransactionId: null,
+    note: null,
+  };
+
+  onClickApprove(productTransactionId: any) {
+    this.formApprove.productTransactionId = productTransactionId;
+    this.dialogApprove = true;
+  }
+
+  async onConfirmApprove() {
+    this.isLoadingApprove = true;
+    try {
+      const resp = await this.productTransactionApi.approve(
+        this.formApprove.productTransactionId,
+        {
+          note: this.formApprove.note,
+        }
+      );
+      if (resp.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: resp.data.message,
+        });
+        return;
+      }
+      this.$snackbar.open({
+        text: "Berhasil menerima pesanan!",
+      });
+      this.fetchProductTransaction();
+      this.dialogApprove = false;
+      this.formApprove = {
+        note: null,
+        productTransactionId: null,
+      };
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    } finally {
+      this.isLoadingApprove = false;
+    }
+  }
+
+  isLoadingUpdateStatus = false;
+
+  async onClickUpdateStatus(id: any, statusId: any) {
+    this.isLoadingUpdateStatus = true;
+    try {
+      const resp = await this.productTransactionApi.updateStatus(id, {
+        productStatusId: statusId,
+      });
+      if (resp.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: resp.data.message,
+        });
+        return;
+      }
+      this.$snackbar.open({
+        text: "Berhasil!",
+      });
+      this.fetchProductTransaction();
+      this.dialogDetail = false;
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    } finally {
+      this.isLoadingUpdateStatus = false;
+    }
+  }
+
+  async onClickCancel(id: any) {
+    try {
+      const resp = await this.productTransactionApi.delete(id);
+      if (resp.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: resp.data.message,
+        });
+        return;
+      }
+      this.$snackbar.open({
+        text: "Berhasil membatalkan!",
+      });
+      this.fetchProductTransaction();
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    } finally {
+    }
+  }
+
   dialogDetail = false;
 
   productTransaction = [] as any[];
 
-  productTransactionDetail = {} as any;
+  productTransactionDetail = null as any;
 
   $snackbar: any;
 
