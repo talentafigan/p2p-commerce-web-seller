@@ -6,4 +6,7 @@ export class ProductCategoryApi {
       params,
     });
   }
+  getDetail(id: any) {
+    return Axios.get("/api/product-category/" + id);
+  }
 }

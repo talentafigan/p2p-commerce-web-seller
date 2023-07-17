@@ -36,6 +36,7 @@ export default class ProductDetail extends Vue {
     image: null,
     productName: null,
     productCategoryId: null,
+    productCategoryParentId: null,
     productDescription: null,
     productPrice: 0,
   };
@@ -82,7 +83,15 @@ export default class ProductDetail extends Vue {
         });
         return;
       }
-      this.form = resp.data.data;
+      this.form = {
+        image: resp.data.data.image,
+        productName: resp.data.data.productName,
+        productCategoryId: resp.data.data.productCategories?.productCategoryId,
+        productCategoryParentId:
+          resp.data.data.productCategories?.productCategoryParentId,
+        productDescription: resp.data.data.productDescription,
+        productPrice: resp.data.data.productPrice,
+      };
     } catch (error: any) {
       const errorMessage = error.response
         ? error.response.message
