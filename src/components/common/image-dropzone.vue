@@ -6,11 +6,8 @@
     style="height: 40vh"
     class="d-flex justify-center flex-column align-center"
   >
-    <div
-      class="d-flex pa-5 w-full justify-center align-center"
-      style="height: 32vh"
-    >
-      <img v-if="field !== null" style="width: 100%" :src="field" alt="" />
+    <div style="height: 32vh;" class="d-flex w-full justify-center align-center">
+      <img v-if="field !== null" style="height: 28vh" :src="field" alt="" />
       <v-icon v-if="field === null" size="70" color="grey lighten-2"
         >mdi-image-plus-outline</v-icon
       >
