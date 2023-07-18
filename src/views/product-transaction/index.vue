@@ -113,6 +113,37 @@
               </v-col>
             </v-row>
           </v-card>
+          <div
+            v-if="
+              productTransactionDetail.productTransactionStatus
+                .productTransactionStatusId === 5
+            "
+            class="d-flex mt-4 justify-start align-start flex-column"
+          >
+            <span class="font-weight-bold text-subtitle-2">Penilaian</span>
+            <div
+              class="w-full mt-6 d-flex justify-center align-center flex-column"
+            >
+              <v-rating
+                disabled
+                :length="5"
+                large
+                background-color="grey lighten-1"
+                color="yellow"
+                readonly
+                dense
+                :value="productTransactionDetail.rating"
+              ></v-rating>
+              <v-textarea
+                :value="productTransactionDetail.ratingDesctiption"
+                dense
+                hide-details="auto"
+                class="w-full"
+                rows="3"
+                disabled
+              ></v-textarea>
+            </div>
+          </div>
           <v-divider
             v-if="
               productTransactionDetail.productTransactionStatus
