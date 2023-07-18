@@ -15,7 +15,11 @@
       >
         <template #[`item.info`]="row">
           <div class="d-flex justify-start items-center pa-2 flex-column">
-            <img style="max-width: 100px" :src="row.item.image" alt="" />
+            <img
+              style="height: 80px; max-width: 100px"
+              :src="row.item.image"
+              alt=""
+            />
             <span class="mt-2 text-caption">{{ row.item.productName }}</span>
           </div>
         </template>
