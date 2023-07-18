@@ -25,30 +25,15 @@
           >
         </template>
         <template #[`item.action`]="row">
-          <v-menu bottom offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-on="on" v-bind="attrs" depressed small color="primary"
-                >Aksi
-                <v-icon class="ml-1" dense small>mdi-chevron-down</v-icon>
-              </v-btn>
-            </template>
-            <v-list nav dense>
-              <v-list-item-group color="primary">
-                <v-list-item
-                  @click="$router.push('/product/' + row.item.productId)"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title>Detail</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item @click="onClickDelete(row.item.productId)">
-                  <v-list-item-content>
-                    <v-list-item-title>Hapus</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-menu>
+          <v-btn @click="onClickDelete(row.item.productId)" icon color="primary"
+            ><v-icon>mdi-delete</v-icon></v-btn
+          >
+          <v-btn
+            @click="$router.push('/product/' + row.item.productId)"
+            icon
+            color="primary"
+            ><v-icon>mdi-eye</v-icon></v-btn
+          >
         </template>
       </v-data-table>
     </v-card>
@@ -91,6 +76,7 @@ export default class Product extends Vue {
       text: "Aksi",
       value: "action",
       sortable: false,
+      align: "center",
     },
   ];
 

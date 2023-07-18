@@ -62,11 +62,7 @@
             <span class="font-weight-bold text-subtitle-2">Detail Kelas</span>
           </div>
           <v-card
-            @click="
-              $router.push(
-                '/product/' + productTransactionDetail.product.productId
-              )
-            "
+            @click="onClickDetailProduct"
             class="cursor-pointer mt-2 pa-4"
             outlined
           >
@@ -369,6 +365,13 @@ export default class ProductTransaction extends Vue {
   onClickApprove(productTransactionId: any) {
     this.formApprove.productTransactionId = productTransactionId;
     this.dialogApprove = true;
+  }
+
+  onClickDetailProduct() {
+    if (this.productTransactionDetail.product.status.statusId === 2) return;
+    this.$router.push(
+      "/product/" + this.productTransactionDetail.product.productId
+    );
   }
 
   async onConfirmApprove() {
