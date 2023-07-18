@@ -13,6 +13,12 @@
         :items-per-page="5"
         class="elevation-0 w-full"
       >
+        <template #[`item.info`]="row">
+          <div class="d-flex justify-start items-center pa-2 flex-column">
+            <img style="max-width: 100px" :src="row.item.image" alt="" />
+            <span class="mt-2 text-caption">{{ row.item.productName }}</span>
+          </div>
+        </template>
         <template #[`item.productPrice`]="row">
           <span class="text-subtitle-2"
             >Rp {{ $helpers.currencyFormat(row.item.productPrice) }}</span
@@ -61,9 +67,10 @@ export default class Product extends Vue {
 
   tableHeader = [
     {
-      text: "Nama",
-      value: "productName",
+      text: "Info",
+      value: "info",
       sortable: false,
+      width: 200,
     },
     {
       text: "Harga",
