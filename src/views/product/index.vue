@@ -16,7 +16,7 @@
         <template #[`item.info`]="row">
           <div class="d-flex justify-start items-center pa-2 flex-column">
             <img
-              style="height: 80px; max-width: 100px"
+              style="max-height: 80px; max-width: 100px"
               :src="row.item.image"
               alt=""
             />
