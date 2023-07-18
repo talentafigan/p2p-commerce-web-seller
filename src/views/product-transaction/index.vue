@@ -368,7 +368,7 @@ export default class ProductTransaction extends Vue {
   }
 
   onClickDetailProduct() {
-    if (this.productTransactionDetail.product.status.statusId === 2) return;
+    if (this.productTransactionDetail.product.status.statusId === 3) return;
     this.$router.push(
       "/product/" + this.productTransactionDetail.product.productId
     );
