@@ -43,9 +43,9 @@
                         </td>
                       </tr>
                       <tr v-for="item in mostSalesProduct" :key="item.name">
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.category }}</td>
-                        <td>{{ item.sales }}</td>
+                        <td>{{ item.productName }}</td>
+                        <td>{{ item.productCategories.productCategoryName }}</td>
+                        <td>{{ item.totalTransaction }}</td>
                       </tr>
                     </tbody>
                   </template>
@@ -71,19 +71,20 @@ export default class Index extends Vue {
   analytics = [
     {
       title: "Transaksi",
-      content: "0",
-      description: "+0% of previous month",
+      content: "-",
+      description: "-",
     },
     {
       title: "Penjualan",
-      content: "0",
-      description: "+0% of previous month",
+      content: "-",
+      description: "-",
     },
   ];
 
-  mostSalesProduct = [] as { name: string; category: string; sales: string }[];
+  mostSalesProduct = [] as any[];
 
   $snackbar: any;
+  $helpers: any;
 
   async fetchAnalytic() {
     try {
@@ -94,8 +95,34 @@ export default class Index extends Vue {
         });
         return;
       }
-      this.analytics[0].content = resp.data.data.transaction;
-      this.analytics[1].content = resp.data.data.sales;
+      this.analytics[0].content = `${this.$helpers.currencyFormat(
+        resp.data.data.transaction
+      )}`;
+      this.analytics[0].description = `${resp.data.data.subTransaction} vs bulan lalu`;
+      this.analytics[1].content = `Rp.${this.$helpers.currencyFormat(
+        resp.data.data.salesAmount
+      )}`;
+      this.analytics[1].description = `${resp.data.data.subSalesAmount} vs bulan lalu`;
+    } catch (error: any) {
+      const errorMessage = error.response
+        ? error.response.message
+        : "System Error, please contact our team";
+      this.$snackbar.open({
+        text: errorMessage,
+      });
+    }
+  }
+
+  async fetchMostSales() {
+    try {
+      const resp = await this.analyticApi.mostSalesProduct();
+      if (resp.data.status !== "SUCCESS") {
+        this.$snackbar.open({
+          text: resp.data.message,
+        });
+        return;
+      }
+      this.mostSalesProduct = resp.data.data;
     } catch (error: any) {
       const errorMessage = error.response
         ? error.response.message
@@ -107,7 +134,8 @@ export default class Index extends Vue {
   }
 
   mounted() {
-    // this.fetchAnalytic();
+    this.fetchAnalytic();
+    this.fetchMostSales();
   }
 }
 </script>
